@@ -12,7 +12,12 @@ var app = builder.Build();
 app.UseStaticFiles();
 
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sender API V1");
+    c.RoutePrefix = "swagger";
+});
 
 app.UseAuthorization();
 
