@@ -20,7 +20,19 @@ namespace Processor.Worker
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            var client = new ServiceBusClient(_config.GetConnectionString("ServiceBus"));
+            string config = _config.GetConnectionString("ServiceBus");
+
+            if (string.IsNullOrWhiteSpace(config) || config == "<FROM_ENV>")
+            {
+                config = Environment.GetEnvironmentVariable("ConnectionStrings__ServiceBus");
+            }
+
+            if (string.IsNullOrWhiteSpace(config))
+            {
+                throw new InvalidOperationException("No se encontró la cadena de conexión para ServiceBus.");
+            }
+
+            var client = new ServiceBusClient(config);
 
             _processor = client.CreateProcessor(QueueName, new ServiceBusProcessorOptions());
 
