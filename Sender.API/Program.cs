@@ -9,15 +9,14 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseStaticFiles();
-
-app.UseSwagger();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sender API V1");
-    c.RoutePrefix = "swagger";
+    c.RoutePrefix = string.Empty; // Swagger en la raíz: https://.../
 });
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 
